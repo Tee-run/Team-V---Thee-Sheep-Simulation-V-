@@ -238,32 +238,28 @@ public abstract class Animal extends Entity{
                 wait--;
             }
     }
-    protected void ChasingMate()
+protected void ChasingMate()
+{
+    if(hunger < hungerToReproduce)
     {
-        if(hunger < hungerToReproduce)
-        {
-            state = AnimalState.lookingForFood;
-            targetEntity = null;
-            return;
-        }
-        if(targetEntity == null || !targetEntity.IsAlive())
-        {
-            targetEntity = null;
-            state = AnimalState.lookingForMate;
-        }
-        try{
-            if(Move(targetEntity.pos, 10))
-            {
-                System.out.println("reproducing");
-                Reproduce((Animal)targetEntity);
-                System.out.println("baby Created");
-                state = AnimalState.lookingForFood;
-
-            }
-        } catch(NullPointerException npe) {
-            System.out.println(this + "Target Entity not found");
-        }
+        state = AnimalState.lookingForFood;
+        targetEntity = null;
+        return;
     }
+    if(targetEntity == null || !targetEntity.IsAlive())
+    {
+        targetEntity = null;
+        state = AnimalState.lookingForMate;
+        return;
+    }
+    if(Move(targetEntity.pos, 10))
+    {
+        System.out.println("reproducing");
+        Reproduce((Animal)targetEntity);
+        System.out.println("baby Created");
+        state = AnimalState.lookingForFood;
+    }
+}
 
     
     protected void Reproduce(Animal anim)
