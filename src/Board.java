@@ -77,22 +77,27 @@ public class Board extends JPanel implements ActionListener {
         drawCounts(g);
     }
 
-    private void drawEntities(Graphics g) {
-        for (List<Entity> list : entities) {
-            for (Entity ent : list) {
-                ent.drawEntity(g);
-                if(ent instanceof Animal)
-                {
-                    Animal animal = (Animal)ent;
-                    animal.AnimalBehaviour();
-                    if (tic % 100 == 0) {
+private void drawEntities(Graphics g) {
+    for (List<Entity> list : entities) {
+        for (Entity ent : list) {
+            ent.drawEntity(g);
+        }
+    }
+}
 
-                        System.out.println(animal + " " + animal.name + " Hunger " + animal.GetHunger() + "State: " + animal.GetState().toString());
-                    }
+private void updateAnimals() {
+    for (List<Entity> list : entities) {
+        for (Entity ent : list) {
+            if (ent instanceof Animal) {
+                Animal animal = (Animal) ent;
+                animal.AnimalBehaviour();
+                if (tic % 100 == 0) {
+                    System.out.println(animal + " " + animal.name + " Hunger " + animal.GetHunger() + " State: " + animal.GetState().toString());
                 }
             }
         }
     }
+}
 
     private void drawGrid(Graphics g) {
         g.setColor(Color.white);
@@ -119,21 +124,25 @@ public class Board extends JPanel implements ActionListener {
         g.drawString("Grass: " + entities.get(Ent.grass.get()).size(), nextX, yPos);
     }
     private int nextSpawn = 300;
-    @Override
-    // After the timer finishes do this
-    public void actionPerformed(ActionEvent e) {
-        if (tic >= nextSpawn) {
-            Flower newFlower = new Flower();
-            newFlower.pos = Position.genRand(bWidth, bHeight, 0, 100, 40);
-            entities.get(Ent.flower.get()).add(newFlower);
-            nextSpawn = tic + (int)(Math.random() * 300 + 200);
-        }
-        repaint();
-        tic++;
-
-        CreateChildren();
-        CleanUp(); 
+  
+   private void spawnFlowers() {
+    if (tic >= nextSpawn) {
+        Flower newFlower = new Flower();
+        newFlower.pos = Position.genRand(bWidth, bHeight, 0, 100, 40);
+        entities.get(Ent.flower.get()).add(newFlower);
+        nextSpawn = tic + (int)(Math.random() * 300 + 200);
     }
+}
+// After the timer finishes do this
+@Override
+public void actionPerformed(ActionEvent e) {
+    spawnFlowers();
+    updateAnimals();
+    CreateChildren();
+    CleanUp();
+    repaint();
+    tic++;
+}
 
     private void CreateChildren()
     {
