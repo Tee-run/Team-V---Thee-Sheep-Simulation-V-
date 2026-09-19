@@ -2,10 +2,6 @@ import java.awt.*;
 import java.util.List;
 
 public class Wolf extends Animal {
-    public Wolf() {
-        super("Wolf", 1.5, 3.0, 8, null);
-        this.colour = Color.gray;
-    }
     public Wolf(String name, float speed, float perception, int lifeSpan, Animal[] parents)
     {
         super(name, speed, perception, lifeSpan, parents);
