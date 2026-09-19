@@ -61,6 +61,7 @@ public class Board extends JPanel implements ActionListener {
         }
 
         tic = 1;
+        nextSpawn = 300;
 
         timer = new Timer(10, this);
         timer.start();
