@@ -39,20 +39,20 @@ public class Board extends JPanel implements ActionListener {
         entities.add(new ArrayList<>());
         entities.add(new ArrayList<>());
         entities.add(new ArrayList<>());
-        entities.get(Ent.sheep.get()).add(new Sheep("Mary", 1, 100, 5, new Animal[]{null, null}));
-        entities.get(Ent.sheep.get()).add(new Sheep("Franky", 2, 70, 5, new Animal[]{null, null}));
-        entities.get(Ent.sheep.get()).add(new Sheep("Bert", 1, 100, 5, new Animal[]{null, null}));
-        entities.get(Ent.sheep.get()).add(new Sheep("Henry VII", 2, 70, 5, new Animal[]{null, null}));
-        //entities.get(Ent.sheep.get()).add(new Sheep("Mary3", 1, 60, 5, new Animal[]{null, null}));
+        entities.get(EntityType.sheep.get()).add(new Sheep("Mary", 1, 100, 5, new Animal[]{null, null}));
+        entities.get(EntityType.sheep.get()).add(new Sheep("Franky", 2, 70, 5, new Animal[]{null, null}));
+        entities.get(EntityType.sheep.get()).add(new Sheep("Bert", 1, 100, 5, new Animal[]{null, null}));
+        entities.get(EntityType.sheep.get()).add(new Sheep("Henry VII", 2, 70, 5, new Animal[]{null, null}));
+        //entities.get(EntityType.sheep.get()).add(new Sheep("Mary3", 1, 60, 5, new Animal[]{null, null}));
 
-        entities.get(Ent.wolf.get()).add(new Wolf("Fido", 1, 120, 5, new Animal[]{null, null}));
-        entities.get(Ent.wolf.get()).add(new Wolf("Scar", 1, 120, 5, new Animal[]{null, null}));
+        entities.get(EntityType.wolf.get()).add(new Wolf("Fido", 1, 120, 5, new Animal[]{null, null}));
+        entities.get(EntityType.wolf.get()).add(new Wolf("Scar", 1, 120, 5, new Animal[]{null, null}));
         for(int i =0; i < 20; i ++)
         {
-            entities.get(Ent.flower.get()).add(new Flower());
+            entities.get(EntityType.flower.get()).add(new Flower());
         }
-        entities.get(Ent.flower.get()).add(new Flower());
-        entities.get(Ent.grass.get()).add(new Grass());
+        entities.get(EntityType.flower.get()).add(new Flower());
+        entities.get(EntityType.grass.get()).add(new Grass());
         for (List<Entity> list : entities) {
             for (Entity ent : list) {
                 ent.pos = Position.genRand(bWidth, bHeight, 0, 100, 40);
@@ -115,13 +115,13 @@ private void updateAnimals() {
         FontMetrics metrics = g.getFontMetrics();
         int yPos =  ((100 - metrics.getHeight()) / 2) + metrics.getAscent();
         int nextX = bWidth / 16;
-        g.drawString("Sheep: " + entities.get(Ent.sheep.get()).size(), nextX, yPos);
+        g.drawString("Sheep: " + entities.get(EntityType.sheep.get()).size(), nextX, yPos);
         nextX += bWidth / 4;
-        g.drawString("Wolves: " + entities.get(Ent.wolf.get()).size(), nextX, yPos);
+        g.drawString("Wolves: " + entities.get(EntityType.wolf.get()).size(), nextX, yPos);
         nextX += bWidth / 4;
-        g.drawString("Flowers: " + entities.get(Ent.flower.get()).size(), nextX, yPos);
+        g.drawString("Flowers: " + entities.get(EntityType.flower.get()).size(), nextX, yPos);
         nextX += bWidth / 4;
-        g.drawString("Grass: " + entities.get(Ent.grass.get()).size(), nextX, yPos);
+        g.drawString("Grass: " + entities.get(EntityType.grass.get()).size(), nextX, yPos);
     }
     private int nextSpawn = 300;
   
@@ -129,7 +129,7 @@ private void updateAnimals() {
     if (tic >= nextSpawn) {
         Flower newFlower = new Flower();
         newFlower.pos = Position.genRand(bWidth, bHeight, 0, 100, 40);
-        entities.get(Ent.flower.get()).add(newFlower);
+        entities.get(EntityType.flower.get()).add(newFlower);
         nextSpawn = tic + (int)(Math.random() * 300 + 200);
     }
 }
@@ -169,19 +169,6 @@ public void actionPerformed(ActionEvent e) {
         }
     }
 
-    public enum Ent {
-        sheep(2), wolf(3), flower(1), grass(0);
-
-        private final int index;
-        
-        private Ent(int index) {
-            this.index = index;
-        }
-
-        public int get() {
-            return index;
-        }
-    }
 
     private class KeyInput extends KeyAdapter {
         @Override 

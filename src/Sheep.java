@@ -8,7 +8,7 @@ public class Sheep extends Animal{
     {
         super(name, speed, perception, lifeSpan, parents);
         nutrition = 0.5;
-        entityType = Board.Ent.sheep;
+        entityType = EntityType.sheep;
         
 
     }   
@@ -17,7 +17,7 @@ public class Sheep extends Animal{
     public Entity LookForFood()
     {
         //tempo just to allow for logic development. Replace with proper entity database at some point
-        List<Entity> allFlowers = Board.entities.get(Board.Ent.flower.get());
+        List<Entity> allFlowers = Board.entities.get(EntityType.flower.get());
     
 
         Entity closest = null;

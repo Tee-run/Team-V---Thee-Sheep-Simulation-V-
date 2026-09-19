@@ -12,6 +12,6 @@ public class Flower extends Plant {
         fColour = new Color(randomR, randomG, randomB);
         this.name = "Flower";
         this.pColour = fColour;
-        entityType = Board.Ent.flower;
+        entityType = EntityType.flower;
     }
 }

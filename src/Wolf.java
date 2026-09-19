@@ -6,13 +6,13 @@ public class Wolf extends Animal {
     {
         super(name, speed, perception, lifeSpan, parents);
         this.colour = Color.gray;
-        entityType = Board.Ent.wolf;
+        entityType = EntityType.wolf;
 
     }  
 
     @Override
     public Entity LookForFood() {
-        List<Entity> allSheep = Board.entities.get(Board.Ent.sheep.get());
+        List<Entity> allSheep = Board.entities.get(EntityType.sheep.get());
 
         Entity closest = null;
 

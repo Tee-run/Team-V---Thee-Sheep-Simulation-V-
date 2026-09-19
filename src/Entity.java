@@ -1,9 +1,9 @@
 import java.awt.*;
 public abstract class Entity {
     public Position pos;
-    protected Board.Ent entityType;
+    protected EntityType entityType;
 
-    public Board.Ent GetType()
+    public EntityType GetType()
     {
         return entityType;
     }
