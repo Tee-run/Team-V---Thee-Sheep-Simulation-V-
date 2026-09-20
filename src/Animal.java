@@ -103,12 +103,22 @@ public abstract class Animal extends Entity{
         }
         return false;
     }
+        // Hunger lost each tick when speed is 1 and perception is 100
+    private static final double BASE_METABOLISM = 0.0001;
+
+    // Fast and good sighted animals burn energy quicker so evolution has a trade off
+    private double metabolismCost()
+    {
+        double speedFactor = speed / 1.0;
+        double perceptionFactor = perception / 100.0;
+        return BASE_METABOLISM * (0.2 + 0.4 * speedFactor + 0.4 * perceptionFactor);
+    }
 
     int wait = 0;
     public void AnimalBehaviour()
     {
         if(!IsAlive()) return;
-        hunger -= 0.0001;
+        hunger -= metabolismCost();
         if(hunger < 0)
         {
             System.out.println(name + " Starved");
