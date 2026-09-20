@@ -29,7 +29,11 @@ public abstract class Animal extends Entity{
 
     private double perception = 100.0; //Distance in pixels that the creature can see
 
-    private int age = 0; // Increase by 1 every generation
+    private int age = 0; // Increases by 1 each year, and a year is TICKS_PER_YEAR ticks
+
+    private int ageTicks = 0;
+
+    private static final int TICKS_PER_YEAR = 3000;
 
     private int lifeSpan = 5;//Every generation after this, flip coin to see if survives
 
@@ -103,7 +107,7 @@ public abstract class Animal extends Entity{
         }
         return false;
     }
-        // Hunger lost each tick when speed is 1 and perception is 100
+    // Hunger lost each tick when speed is 1 and perception is 100
     private static final double BASE_METABOLISM = 0.0001;
 
     // Fast and good sighted animals burn energy quicker so evolution has a trade off
@@ -113,12 +117,30 @@ public abstract class Animal extends Entity{
         double perceptionFactor = perception / 100.0;
         return BASE_METABOLISM * (0.2 + 0.4 * speedFactor + 0.4 * perceptionFactor);
     }
+    // Called once per tick, if past its lifespan, an animal has a coin flip each birthday to survive.
+    private void ageOneTick()
+    {
+        ageTicks++;
+        if (ageTicks % TICKS_PER_YEAR != 0)
+        {
+            return;
+        }
+        age++;
+        if (age > lifeSpan && Math.random() < 0.5)
+        {
+            System.out.println(name + " died of old age at " + age);
+            KillEntity();
+        }
+    }
 
     int wait = 0;
     public void AnimalBehaviour()
     {
         if(!IsAlive()) return;
         hunger -= metabolismCost();
+        ageOneTick();
+        
+        if(!IsAlive()) return;
         if(hunger < 0)
         {
             System.out.println(name + " Starved");
