@@ -187,40 +187,16 @@ public abstract class Animal extends Entity{
         state = AnimalState.chasingMate;
     }
     
-    protected void LookingForMate()
+        protected void LookingForMate()
     {
-        Entity closest = null;
-        double closestDist = 99999;        
-        for (Entity ent: Board.entities.get(entityType.get()) )
+        List<Entity> sameType = Board.entities.get(entityType.get());
+        Optional<Entity> mate = findClosest(sameType, e -> ((Animal) e).GetState() == AnimalState.lookingForMate);
+
+        if(mate.isPresent())
         {
-            if(ent == null || ent == this)
-            {
-                continue;
-            }else {
-                Animal a = (Animal)ent;
-                if(a != null && a.GetState() == AnimalState.lookingForMate)
-                {
-                    //other creature is not ready to mate
-                    a.AttractMate(this);
-                    
-                }else{
-                    continue;
-                }
-            }
-            double dist = this.pos.dist(ent.pos) ;
-            if(dist < this.perception && dist < closestDist)
-            {
-                closest = ent;
-                closestDist = dist;
-            }
-        }
-
-
-            
-
-        if(closest != null)
-        {
-            targetEntity = closest;
+            Animal partner = (Animal) mate.get();
+            partner.AttractMate(this);
+            targetEntity = partner;
             state = AnimalState.chasingMate;
         }else if(hunger < hungerToReproduce)
         {
@@ -230,7 +206,6 @@ public abstract class Animal extends Entity{
         {
             RoamRandomly();
         }
-        
     }
 
     protected void RoamRandomly()
