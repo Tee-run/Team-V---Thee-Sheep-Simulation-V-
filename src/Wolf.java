@@ -11,29 +11,12 @@ public class Wolf extends Animal {
     }  
 
     @Override
-    public Entity LookForFood() {
-        List<Entity> allSheep = Board.entities.get(EntityType.sheep.get());
+    public Entity LookForFood()
+    {
 
-        Entity closest = null;
-
-        double closestDist = 99999;
-        for (Entity sheep : allSheep) {
-
-            double dist = this.pos.dist(sheep.pos) ;
-            if(dist < getPerception() && dist < closestDist)
-            {
-                closest = sheep;
-                closestDist = dist;
-            }
-        }
-
-        if(closest != null)
-        {
-            // System.out.println("Closest sheep @ " + closest.pos);
-        }else{
-            // System.out.println("No sheep in range");
-        }
-        return closest;
+    List<Entity> allSheep = Board.entities.get(EntityType.sheep.get());
+    return findClosest(allSheep).orElse(null);
+    
     }
     
 @Override 
