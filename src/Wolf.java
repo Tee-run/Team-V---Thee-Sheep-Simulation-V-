@@ -2,62 +2,27 @@ import java.awt.*;
 import java.util.List;
 
 public class Wolf extends Animal {
-    public Wolf() {
-        super("Wolf", 1.5, 3.0, 8, null);
-        this.colour = Color.gray;
-    }
-    public Wolf(String name, float speed, float perception, int lifeSpan, Animal[] parents)
+    public Wolf(String name, double speed, double perception, int lifeSpan, Animal[] parents)
     {
         super(name, speed, perception, lifeSpan, parents);
-        this.colour = Color.gray;
-        entityType = Board.Ent.wolf;
+        setColour(Color.gray);
+        entityType = EntityType.wolf;
 
     }  
 
     @Override
-    public Entity LookForFood() {
-        List<Entity> allSheep = Board.entities.get(Board.Ent.sheep.get());
-
-        Entity closest = null;
-
-        double closestDist = 99999;
-        for (Entity sheep : allSheep) {
-
-            double dist = this.pos.dist(sheep.pos) ;
-            if(dist < this.perception && dist < closestDist)
-            {
-                closest = sheep;
-                closestDist = dist;
-            }
-        }
-
-        if(closest != null)
-        {
-            // System.out.println("Closest sheep @ " + closest.pos);
-        }else{
-            // System.out.println("No sheep in range");
-        }
-        return closest;
-    }
-
-    
-    public void EatSheep(Entity entity) {
-        if (entity instanceof Sheep) {
-            EatFood(entity);
-        }
-    }
-    
-@Override 
-    protected void Reproduce(Animal partAnimal)
+    public Entity LookForFood()
     {
-        super.Reproduce(partAnimal);
-       Board.babyAnimals.add(new Wolf(null, 1, 60, 5, new Animal[]{this, partAnimal}));
-        
+
+    List<Entity> allSheep = Board.entities.get(EntityType.sheep.get());
+    return findClosest(allSheep).orElse(null);
+
     }
-/*
-    public void Die() {
-        KillEntity();
+    
+    @Override
+    protected Animal createChild(double speed, double perception, int lifeSpan, Animal[] parents)
+    {
+        return new Wolf(null, speed, perception, lifeSpan, parents);
     }
-*/
 
 }
