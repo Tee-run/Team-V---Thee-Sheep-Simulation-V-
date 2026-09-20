@@ -273,11 +273,7 @@ protected void ChasingMate()
         
         
     }
-    public Entity LookForFood()
-    {
-        //System.out.println("This is the base look for food function, should not be called");
-        return null;
-    }
+    public abstract Entity LookForFood();
 
     
     public void EatFood(Entity entity)
