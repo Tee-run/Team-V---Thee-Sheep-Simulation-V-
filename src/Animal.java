@@ -246,19 +246,26 @@ public abstract class Animal extends Entity{
 }
 
     
-    protected void Reproduce(Animal anim)
+        protected void Reproduce(Animal partner)
     {
         targetEntity = null;
-        
-        hunger = hunger - 0.4f;
-        anim.hunger = anim.hunger - 0.4f;
-        anim.targetEntity = null;
 
-        //temp
-        
-        
+        hunger = hunger - 0.4f;
+        partner.hunger = partner.hunger - 0.4f;
+        partner.targetEntity = null;
+
+        double childSpeed = Genetics.inherit(speed, partner.speed, Genetics.MIN_SPEED, Genetics.MAX_SPEED);
+        double childPerception = Genetics.inherit(perception, partner.perception, Genetics.MIN_PERCEPTION, Genetics.MAX_PERCEPTION);
+
+        System.out.println(String.format("Baby born with speed %.2f and perception %.1f", childSpeed, childPerception));
+        Board.babyAnimals.add(createChild(childSpeed, childPerception, lifeSpan, new Animal[]{this, partner}));
     }
-    // Generic search. T can be any Entity subtype, and the filter decides which candidates count.
+
+    // Each species builds its own kind of child Animal decides the traits and the subclass decides the type
+    protected abstract Animal createChild(double speed, double perception, int lifeSpan, Animal[] parents);
+
+
+    // Generic search T can be any entity subtype, and the filter decides which candidates count
     protected <T extends Entity> Optional<T> findClosest(List<T> candidates, Predicate<T> filter)
 {
     T closest = null;

@@ -2,7 +2,7 @@ import java.util.List;
 public class Sheep extends Animal{
 
 
-    public Sheep(String name, float speed, float perception, int lifeSpan, Animal[] parents)
+        public Sheep(String name, double speed, double perception, int lifeSpan, Animal[] parents)
     {
         super(name, speed, perception, lifeSpan, parents);
         nutrition = 0.5;
@@ -14,7 +14,7 @@ public class Sheep extends Animal{
     @Override
     public Entity LookForFood()
     {
-        
+
     List<Entity> allFlowers = Board.entities.get(EntityType.flower.get());
     return findClosest(allFlowers).orElse(null);
 
@@ -23,12 +23,10 @@ public class Sheep extends Animal{
 
    
 
-    @Override 
-    protected void Reproduce(Animal partAnimal)
+    @Override
+    protected Animal createChild(double speed, double perception, int lifeSpan, Animal[] parents)
     {
-        super.Reproduce(partAnimal);
-       Board.babyAnimals.add(new Sheep(null, 1, 60, 5, new Animal[]{this, partAnimal}));
-        
+        return new Sheep(null, speed, perception, lifeSpan, parents);
     }
 
 

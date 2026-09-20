@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.List;
 
 public class Wolf extends Animal {
-    public Wolf(String name, float speed, float perception, int lifeSpan, Animal[] parents)
+    public Wolf(String name, double speed, double perception, int lifeSpan, Animal[] parents)
     {
         super(name, speed, perception, lifeSpan, parents);
         setColour(Color.gray);
@@ -16,15 +16,13 @@ public class Wolf extends Animal {
 
     List<Entity> allSheep = Board.entities.get(EntityType.sheep.get());
     return findClosest(allSheep).orElse(null);
-    
+
     }
     
-@Override 
-    protected void Reproduce(Animal partAnimal)
+    @Override
+    protected Animal createChild(double speed, double perception, int lifeSpan, Animal[] parents)
     {
-        super.Reproduce(partAnimal);
-       Board.babyAnimals.add(new Wolf(null, 1, 60, 5, new Animal[]{this, partAnimal}));
-        
+        return new Wolf(null, speed, perception, lifeSpan, parents);
     }
 
 }
