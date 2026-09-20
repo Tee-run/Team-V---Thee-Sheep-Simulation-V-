@@ -89,15 +89,17 @@ public abstract class Animal extends Entity{
     protected void setColour(Color colour) { this.colour = colour; }
 
     //Moves animal towards destination, returns true if it is at the destination already with buffer.
-    public boolean Move(Position destination, int buffer)
+        public boolean Move(Position destination, int buffer)
     {
         Position direction = pos.dir(destination);
-        if(Math.abs(direction.getX()) <= buffer && Math.abs(direction.getY()) <= buffer){return true;}
-        if(Math.abs(direction.getX()) > Math.abs(direction.getY()))
+        double dx = direction.getExactX();
+        double dy = direction.getExactY();
+        if(Math.abs(dx) <= buffer && Math.abs(dy) <= buffer){return true;}
+        if(Math.abs(dx) > Math.abs(dy))
         {
-            pos.setX((int)(pos.getX() + speed * Math.signum(direction.getX())));
+            pos.setX(pos.getExactX() + speed * Math.signum(dx));
         }else{
-            pos.setY((int)(pos.getY() + speed * Math.signum(direction.getY())));
+            pos.setY(pos.getExactY() + speed * Math.signum(dy));
         }
         return false;
     }
