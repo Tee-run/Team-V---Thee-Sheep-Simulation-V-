@@ -12,7 +12,8 @@ public abstract class Animal extends Entity{
         lookingForFood, 
         chasingFood,
         lookingForMate,
-        chasingMate;
+        chasingMate,
+        fleeing;
     }
 
     private static String[] nameList = {"Mary", "Franky", "Franklin", "Georgie", "Susan", "Laura", "Daisy", "Rose","Cody","Cuddles", "Bill", "Shaun", "Katie", "Brutus", "Scar", "Fido", "Jet", };
@@ -45,6 +46,11 @@ public abstract class Animal extends Entity{
     private Animal[] parents = new Animal[2];
 
     private Entity targetEntity = null;
+    private Entity threatEntity = null;
+
+    // A sheep keeps running for this many ticks after it last saw a threat, which stops flickering
+    private static final int FLEE_MEMORY_TICKS = 100;
+    private int fleeTicksLeft = 0;
 
     private Position randPos;
 
@@ -139,7 +145,7 @@ public abstract class Animal extends Entity{
         if(!IsAlive()) return;
         hunger -= metabolismCost();
         ageOneTick();
-        
+
         if(!IsAlive()) return;
         if(hunger < 0)
         {
@@ -149,6 +155,25 @@ public abstract class Animal extends Entity{
             return;
         }
         
+                // A threat in view overrides whatever the animal was doing
+        Entity seenThreat = LookForThreat();
+        if(seenThreat != null)
+        {
+            threatEntity = seenThreat;
+            fleeTicksLeft = FLEE_MEMORY_TICKS;
+            state = AnimalState.fleeing;
+            targetEntity = null;
+        }else if(state == AnimalState.fleeing)
+        {
+            // Threat is out of sight, so keep running until the memory timer runs out
+            fleeTicksLeft--;
+            if(fleeTicksLeft <= 0 || threatEntity == null || !threatEntity.IsAlive())
+            {
+                threatEntity = null;
+                state = AnimalState.lookingForFood;
+            }
+        }
+
         switch(state){
             case AnimalState.lookingForFood:
             {
@@ -169,10 +194,15 @@ public abstract class Animal extends Entity{
                 break;
             }
 
-        }     
-    }
+             case fleeing:
+            {
+                Flee();
+                break;
+            }
+        }
+    }  
 
-    protected void LookingForFood()
+        protected void LookingForFood()
     {
         if(targetEntity == null || !targetEntity.IsAlive())
         {
@@ -183,14 +213,11 @@ public abstract class Animal extends Entity{
             }else
             {
                 RoamRandomly();
-            
             }
-        
         }else{
             targetEntity = null;
             RoamRandomly();
         }
-
     }
 
     protected void ChasingFood()
@@ -328,6 +355,40 @@ public abstract class Animal extends Entity{
     {
     return findClosest(candidates, c -> true);
     }
+        // Fleeing is slower than normal movement, so wolves can still catch tired or cornered sheep
+    private static final double FLEE_SPEED_FACTOR = 0.8;
+
+    // Species with predators override this. By default an animal fears nothing.
+    protected Entity LookForThreat()
+    {
+        return null;
+    }
+
+    // Runs directly away from the threat and stays inside the board
+        protected void Flee()
+    {
+        if(threatEntity == null)
+        {
+            state = AnimalState.lookingForFood;
+            return;
+        }
+        double dx = pos.getExactX() - threatEntity.pos.getExactX();
+        double dy = pos.getExactY() - threatEntity.pos.getExactY();
+        double length = Math.sqrt(dx * dx + dy * dy);
+        if(length == 0)
+        {
+            dx = 1;
+            dy = 0;
+            length = 1;
+        }
+        double newX = pos.getExactX() + speed * FLEE_SPEED_FACTOR * dx / length;
+        double newY = pos.getExactY() + speed * FLEE_SPEED_FACTOR * dy / length;
+        newX = Math.max(0, Math.min(Board.bWidth - 40, newX));
+        newY = Math.max(100, Math.min(Board.bHeight + 100 - 40, newY));
+        pos.setX(newX);
+        pos.setY(newY);
+    }
+    
 
     public abstract Entity LookForFood();
 

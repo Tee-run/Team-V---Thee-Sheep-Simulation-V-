@@ -29,5 +29,13 @@ public class Sheep extends Animal{
         return new Sheep(null, speed, perception, lifeSpan, parents);
     }
 
+    // Sheep fear wolves. Any wolf inside this sheep's perception range counts as a threat.
+    @Override
+    protected Entity LookForThreat()
+    {
+        List<Entity> wolves = Board.entities.get(EntityType.wolf.get());
+        return findClosest(wolves).orElse(null);
+    }
+
 
 }
