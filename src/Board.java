@@ -160,14 +160,24 @@ private void updateAnimals() {
     }
     private int nextSpawn = 300;
   
-   private void spawnFlowers() {
-    if (tic >= nextSpawn) {
-        Flower newFlower = new Flower();
-        newFlower.pos = Position.genRand(bWidth, bHeight, 0, 100, 40);
-        entities.get(EntityType.flower.get()).add(newFlower);
-        nextSpawn = tic + (int)(Math.random() * 300 + 200);
+    // Flower growth sttings to adjust these to balance the food supply
+    private static final int SPAWN_MIN_TICKS = 120;
+    private static final int SPAWN_RANGE_TICKS = 130;
+    private static final int MAX_FLOWERS = 40;
+
+    private void spawnFlowers() {
+        if (tic < nextSpawn) {
+            return;
+        }
+        List<Entity> flowers = entities.get(EntityType.flower.get());
+        if (flowers.size() < MAX_FLOWERS) {
+            Flower newFlower = new Flower();
+            newFlower.pos = Position.genRand(bWidth, bHeight, 0, 100, 40);
+            flowers.add(newFlower);
+        }
+        nextSpawn = tic + SPAWN_MIN_TICKS + (int)(Math.random() * SPAWN_RANGE_TICKS);
     }
-}
+
 // After the timer finishes do this
 @Override
 public void actionPerformed(ActionEvent e) {
