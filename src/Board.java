@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
 
 import javax.swing.*;
 
@@ -75,6 +76,7 @@ public class Board extends JPanel implements ActionListener {
         drawEntities(g);
         drawGrid(g);
         drawCounts(g);
+        drawStats(g);
     }
 
 private void drawEntities(Graphics g) {
@@ -110,6 +112,39 @@ private void updateAnimals() {
     }
 
     Font medium = new Font("Helvetica", Font.PLAIN, 16);
+        Font small = new Font("Helvetica", Font.PLAIN, 12);
+
+    // Averages any trait over one species. The lambda passed in says which trait to read.
+    private double averageTrait(EntityType type, ToDoubleFunction<Animal> trait)
+    {
+        List<Entity> group = entities.get(type.get());
+        double total = 0;
+        for (int i = 0; i < group.size(); i++)
+        {
+            total += trait.applyAsDouble((Animal) group.get(i));
+        }
+        return total / group.size();
+    }
+
+    private String statsLine(String label, EntityType type)
+    {
+        if (entities.get(type.get()).isEmpty())
+        {
+            return label + " extinct";
+        }
+        double speed = averageTrait(type, a -> a.getSpeed());
+        double perception = averageTrait(type, a -> a.getPerception());
+        return String.format("%s avg speed %.2f, perception %.0f", label, speed, perception);
+    }
+
+    private void drawStats(Graphics g)
+    {
+        g.setFont(small);
+        g.setColor(Color.white);
+        g.drawString(statsLine("Sheep", EntityType.sheep), 10, 90);
+        g.drawString(statsLine("Wolves", EntityType.wolf), bWidth / 2, 90);
+    }
+
     private void drawCounts(Graphics g) {
         g.setFont(medium);
         FontMetrics metrics = g.getFontMetrics();
