@@ -295,13 +295,6 @@ protected void ChasingMate()
 
     }
 
-
-    
-    public void Reproduce() 
-    {
-        
-    }
-
     @Override
     public void drawEntity(Graphics g) {
         g.setColor(colour);

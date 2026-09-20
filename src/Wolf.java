@@ -35,13 +35,6 @@ public class Wolf extends Animal {
         }
         return closest;
     }
-
-    
-    public void EatSheep(Entity entity) {
-        if (entity instanceof Sheep) {
-            EatFood(entity);
-        }
-    }
     
 @Override 
     protected void Reproduce(Animal partAnimal)
@@ -50,10 +43,5 @@ public class Wolf extends Animal {
        Board.babyAnimals.add(new Wolf(null, 1, 60, 5, new Animal[]{this, partAnimal}));
         
     }
-/*
-    public void Die() {
-        KillEntity();
-    }
-*/
 
 }

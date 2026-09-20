@@ -1,8 +1,6 @@
-import java.util.ArrayList;
 import java.util.List;
 public class Sheep extends Animal{
 
-    Flower targetFlower = null;
 
     public Sheep(String name, float speed, float perception, int lifeSpan, Animal[] parents)
     {
