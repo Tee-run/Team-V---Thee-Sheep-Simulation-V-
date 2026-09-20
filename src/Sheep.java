@@ -23,7 +23,7 @@ public class Sheep extends Animal{
         for (Entity flower : allFlowers) {
 
             double dist = this.pos.dist(flower.pos) ;
-            if(dist < this.perception && dist < closestDist)
+            if(dist < getPerception() && dist < closestDist)
             {
                 closest = flower;
                 closestDist = dist;

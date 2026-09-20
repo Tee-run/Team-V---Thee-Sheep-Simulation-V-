@@ -23,15 +23,15 @@ public abstract class Animal extends Entity{
         return hunger;
     }
 
-    public double speed = 1.0; //Tiles moved
+    private double speed = 1.0; //Tiles moved
 
-    public double perception = 100.0; //Distance in pixels that the creature can see
+    private double perception = 100.0; //Distance in pixels that the creature can see
 
-    public int age = 0; // Increase by 1 every generation
+    private int age = 0; // Increase by 1 every generation
 
-    public int lifeSpan = 5;//Every generation after this, flip coin to see if survives
+    private int lifeSpan = 5;//Every generation after this, flip coin to see if survives
 
-    public Color colour = Color.white;
+    private Color colour = Color.white;
 
     protected static double hungerToReproduce = 0.75; //Will look for a mate if hunger above this level;
 
@@ -40,7 +40,7 @@ public abstract class Animal extends Entity{
 
     private Entity targetEntity = null;
 
-    public Position randPos;
+    private Position randPos;
 
     protected AnimalState state = AnimalState.lookingForFood;
 
@@ -79,7 +79,13 @@ public abstract class Animal extends Entity{
         }
         this.randPos = Position.genRand(Board.bWidth, Board.bHeight, 0, 100, 40);
     }
-
+    public double getSpeed() { return speed; }
+    public double getPerception() { return perception; }
+    public int getAge() { return age; }
+    public int getLifeSpan() { return lifeSpan; }
+    public Color getColour() { return colour; }
+    protected void setColour(Color colour) { this.colour = colour; }
+    
     //Moves animal towards destination, returns true if it is at the destination already with buffer.
     public boolean Move(Position destination, int buffer)
     {

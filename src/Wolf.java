@@ -5,7 +5,7 @@ public class Wolf extends Animal {
     public Wolf(String name, float speed, float perception, int lifeSpan, Animal[] parents)
     {
         super(name, speed, perception, lifeSpan, parents);
-        this.colour = Color.gray;
+        setColour(Color.gray);
         entityType = EntityType.wolf;
 
     }  
@@ -20,7 +20,7 @@ public class Wolf extends Animal {
         for (Entity sheep : allSheep) {
 
             double dist = this.pos.dist(sheep.pos) ;
-            if(dist < this.perception && dist < closestDist)
+            if(dist < getPerception() && dist < closestDist)
             {
                 closest = sheep;
                 closestDist = dist;
