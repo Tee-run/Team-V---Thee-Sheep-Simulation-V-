@@ -25,7 +25,7 @@ public abstract class Animal extends Entity{
 
     public double speed = 1.0; //Tiles moved
 
-    public double perception = 2.0; //Range of which creature can see
+    public double perception = 100.0; //Distance in pixels that the creature can see
 
     public int age = 0; // Increase by 1 every generation
 
@@ -200,7 +200,7 @@ public abstract class Animal extends Entity{
                 }
             }
             double dist = this.pos.dist(ent.pos) ;
-            if(dist < this.perception*100 && dist < closestDist)
+            if(dist < this.perception && dist < closestDist)
             {
                 closest = ent;
                 closestDist = dist;
