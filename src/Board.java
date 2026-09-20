@@ -144,14 +144,31 @@ public void actionPerformed(ActionEvent e) {
     tic++;
 }
 
-    private void CreateChildren()
+       private void CreateChildren()
     {
-        for(Animal baby : babyAnimals )
+        for(int i = 0; i < babyAnimals.size(); i++)
         {
-            entities.get(baby.GetType().get()).add(baby);
+            Animal baby = babyAnimals.get(i);
+            try {
+                checkOnBoard(baby);
+                entities.get(baby.GetType().get()).add(baby);
+            } catch (InvalidPositionException e) {
+                System.out.println("Baby discarded. " + e.getMessage());
+            }
         }
 
         babyAnimals.clear();
+    }
+
+    // throws if the entity is outside the playable area 
+    private void checkOnBoard(Entity ent) throws InvalidPositionException
+    {
+        int x = ent.pos.getX();
+        int y = ent.pos.getY();
+        if (x < 0 || x > bWidth || y < 100 || y > bHeight + 100)
+        {
+            throw new InvalidPositionException("Position is outside the board", ent.pos);
+        }
     }
 
     private void CleanUp()
