@@ -15,7 +15,6 @@ public abstract class Animal extends Entity{
 
     private static String[] nameList = {"Mary", "Franky", "Franklin", "Georgie", "Susan", "Laura", "Daisy", "Rose","Cody","Cuddles", "Bill", "Shaun", "Katie", "Brutus", "Scar", "Fido", "Jet", };
 
-    public String name = "Background Character";
 
     protected double hunger = 0.5; //Range from 1.0 (Creature full), (0.0) Creature dies)
 

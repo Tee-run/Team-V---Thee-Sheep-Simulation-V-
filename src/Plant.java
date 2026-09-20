@@ -6,7 +6,6 @@ import java.awt.Graphics;
 
 public abstract class Plant extends Entity {
     
-    public String name;
 
     public Color pColour; 
     

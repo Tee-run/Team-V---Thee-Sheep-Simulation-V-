@@ -2,7 +2,7 @@ import java.awt.*;
 public abstract class Entity {
     public Position pos;
     protected EntityType entityType;
-
+    public String name = "Unnamed";
     public EntityType GetType()
     {
         return entityType;
