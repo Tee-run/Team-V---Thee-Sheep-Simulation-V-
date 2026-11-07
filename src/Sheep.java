@@ -19,34 +19,18 @@ public class Sheep extends Animal {
     @Override
     public Entity LookForFood()
     {
-        // Search for the closest living flower within perception range.
-        Entity closestFlower = Board.entities.get(Board.Ent.flower.get())
-            .stream()
-            .filter(Entity::IsAlive)
-            .filter(flower ->
-                this.pos.dist(flower.pos) < genes.GetPerception())
-            .min(Comparator.comparingDouble(
-                flower -> this.pos.dist(flower.pos)))
-            .orElse(null);
-
         // Flowers are preferred over grass.
+        Entity closestFlower = findClosest(Board.entities.get(Board.Ent.flower.get()));
         if (closestFlower != null)
         {
             return closestFlower;
         }
 
         // If no flower is nearby, search for grass instead.
-        return Board.entities.get(Board.Ent.grass.get())
-            .stream()
-            .filter(Entity::IsAlive)
-            .filter(grass ->
-                this.pos.dist(grass.pos) < genes.GetPerception())
-            .min(Comparator.comparingDouble(
-                grass -> this.pos.dist(grass.pos)))
-            .orElse(null);
+        return findClosest(Board.entities.get(Board.Ent.grass.get()));
     }
 
-        @Override
+    @Override
     protected void Reproduce(Animal partAnimal)
     {
         System.out.println("Making baby sheep");

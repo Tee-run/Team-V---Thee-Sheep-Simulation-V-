@@ -122,12 +122,12 @@ public class Board extends JPanel implements ActionListener {
         Grass: 8-12
         Flowers: 0-2
     */
-        private void spawnEntities() {
+    private void spawnEntities() {
         //Spawn sheep
         int startAmount = (int)(Math.random() * 5 + 7);
 
         for (int i = 0; i < startAmount; i++) {
-           entities.get(Ent.sheep.get()).add(EntityFactory.createSheep());
+            entities.get(Ent.sheep.get()).add(EntityFactory.createSheep());
         }
 
         //Spawn wolves
@@ -148,7 +148,6 @@ public class Board extends JPanel implements ActionListener {
             entities.get(Ent.flower.get()).add(new Flower());
         }
     }
-    
     public boolean showStats;
     @Override
     public void paintComponent(Graphics g) {

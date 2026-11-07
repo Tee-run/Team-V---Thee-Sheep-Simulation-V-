@@ -67,14 +67,7 @@ public class Wolf extends Animal {
     public Entity LookForFood()
     {
         // finds the closest sheep within perception range
-        return Board.entities.get(Board.Ent.sheep.get())
-            .stream()
-            .filter(Entity::IsAlive)
-            .filter(sheep ->
-                pos.dist(sheep.pos) < genes.GetPerception())
-            .min(Comparator.comparingDouble(
-                sheep -> pos.dist(sheep.pos)))
-            .orElse(null);
+        return findClosest(Board.entities.get(Board.Ent.sheep.get()));
     }
 
     @Override

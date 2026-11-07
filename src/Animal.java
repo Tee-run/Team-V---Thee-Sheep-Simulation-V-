@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 
 public abstract class Animal extends Entity{
@@ -549,6 +551,16 @@ public abstract class Animal extends Entity{
 
 
     }
+    //closest living entity in the list within perception range, null if there isn't one
+    protected <T extends Entity> T findClosest(List<T> candidates)
+    {
+        return candidates.stream()
+            .filter(Entity::IsAlive)
+            .filter(ent -> pos.dist(ent.pos) < genes.GetPerception())
+            .min(Comparator.comparingDouble(ent -> pos.dist(ent.pos)))
+            .orElse(null);
+    }
+    
     public Entity LookForFood()
     {
         //System.out.println("This is the base look for food function, should not be called");
