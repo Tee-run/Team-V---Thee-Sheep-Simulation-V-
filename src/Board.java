@@ -122,31 +122,12 @@ public class Board extends JPanel implements ActionListener {
         Grass: 8-12
         Flowers: 0-2
     */
-    private void spawnEntities() {
+        private void spawnEntities() {
         //Spawn sheep
         int startAmount = (int)(Math.random() * 5 + 7);
 
         for (int i = 0; i < startAmount; i++) {
-
-            Genes genes = new Genes(
-                20 * (int)(Math.random()  + 8),
-                (int)(Math.random()) + 1,
-
-                2500,
-                3000,
-                2,
-                20,
-                1,
-                2,
-                20,
-                100
-
-
-            );
-            /*
-            float speed = (int)(Math.random()) + 1;
-            float perception = 10 * ((int)(Math.random() * 4) + 6);
-            */
+            Genes genes = GenesBuilder.sheep().build();
             Sheep newSheep = new Sheep(genes, new Animal[]{null, null}, (int) (Math.random()*  genes.GetLifespan()* 0.75));
             entities.get(Ent.sheep.get()).add(newSheep);
         }
@@ -154,33 +135,7 @@ public class Board extends JPanel implements ActionListener {
         //Spawn wolves
         startAmount = (int)(Math.random() * 3 + 2);
         for (int i = 0; i < startAmount; i++) {
-            Genes genes = new Genes(
-//
-//                 15 * ((int)(Math.random()) + 6),
-//                 (int)(Math.random() * 1) + 1,
-//                 (int)(Math.random() * 1000) + 750,
-//                 (int)(Math.random() * 1500) + 750,
-//                 (int)(Math.random() * 15) + 5,
-//                 (int)(Math.random() * 10) + 10,
-//                 1,
-//                 1.2,
-//                 20,
-//                 1000
-
-                90,
-                2,
-                (int)(Math.random() * 1000) + 2500, // lifespan
-                (int)(Math.random() * 1500) + 750,
-                (int)(Math.random() * 15) + 5,
-                (int)(Math.random() * 10) + 10,
-                1,
-                2.0,
-                20,
-                1000
-
-            );
-
-
+            Genes genes = GenesBuilder.wolf().build();
             Wolf newWolf = new Wolf(genes, new Animal[]{null, null}, (int) (Math.random()*  genes.GetLifespan() * 0.20)); // changed from 0.75
             entities.get(Ent.wolf.get()).add(newWolf);
         }
@@ -197,6 +152,7 @@ public class Board extends JPanel implements ActionListener {
             entities.get(Ent.flower.get()).add(new Flower());
         }
     }
+    
     public boolean showStats;
     @Override
     public void paintComponent(Graphics g) {
