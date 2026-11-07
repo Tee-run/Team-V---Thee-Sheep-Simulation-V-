@@ -46,20 +46,12 @@ public class Sheep extends Animal {
             .orElse(null);
     }
 
-    @Override
+        @Override
     protected void Reproduce(Animal partAnimal)
     {
         System.out.println("Making baby sheep");
 
-        Genes babyGenes = new Genes(genes, partAnimal.GetGenes());
-
-        Sheep newSheep = new Sheep(
-            babyGenes,
-            new Animal[]{this, partAnimal},
-            0
-        );
-
-        Board.babyAnimals.add(newSheep);
+        Board.babyAnimals.add(EntityFactory.createSheep(this, partAnimal));
 
         super.Reproduce(partAnimal);
     }

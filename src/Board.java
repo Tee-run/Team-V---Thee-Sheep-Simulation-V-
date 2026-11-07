@@ -127,17 +127,13 @@ public class Board extends JPanel implements ActionListener {
         int startAmount = (int)(Math.random() * 5 + 7);
 
         for (int i = 0; i < startAmount; i++) {
-            Genes genes = GenesBuilder.sheep().build();
-            Sheep newSheep = new Sheep(genes, new Animal[]{null, null}, (int) (Math.random()*  genes.GetLifespan()* 0.75));
-            entities.get(Ent.sheep.get()).add(newSheep);
+           entities.get(Ent.sheep.get()).add(EntityFactory.createSheep());
         }
 
         //Spawn wolves
         startAmount = (int)(Math.random() * 3 + 2);
         for (int i = 0; i < startAmount; i++) {
-            Genes genes = GenesBuilder.wolf().build();
-            Wolf newWolf = new Wolf(genes, new Animal[]{null, null}, (int) (Math.random()*  genes.GetLifespan() * 0.20)); // changed from 0.75
-            entities.get(Ent.wolf.get()).add(newWolf);
+            entities.get(Ent.wolf.get()).add(EntityFactory.createWolf());
         }
 
         //Spawn Grass

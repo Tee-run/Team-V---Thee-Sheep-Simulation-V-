@@ -107,9 +107,7 @@ public class Wolf extends Animal {
     protected void Reproduce(Animal partAnimal)
     {
         super.Reproduce(partAnimal);
-        Genes babyGenes = new Genes(genes, partAnimal.GetGenes());
-       Board.babyAnimals.add(new Wolf(babyGenes, new Animal[]{this, partAnimal}, 0));
-
+        Board.babyAnimals.add(EntityFactory.createWolf(this, partAnimal));
     }
 
     @Override
