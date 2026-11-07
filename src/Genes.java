@@ -1,6 +1,7 @@
 public class Genes {
 
     private  static double mutationChance = 0.05;
+    private static double mutationRange = 0.5; 
     private double perception;
     private double speed;
     private int lifeSpan;
@@ -103,7 +104,7 @@ public class Genes {
     public Genes(Genes ParentA, Genes ParentB)
     {
         this.perception = InheritGene(ParentA.GetPerception(), ParentB.GetPerception());
-        this.speed = InheritGene(ParentA.GetSpeed(), ParentB.GetSpeed());
+        this.speed = Math.max(1, InheritGene(ParentA.GetSpeed(), ParentB.GetSpeed())); 
         this.lifeSpan = InheritGene(ParentA.GetLifespan(), ParentB.GetLifespan());
         this.maxStamina = InheritGene(ParentA.GetMaxStamina(), ParentB.GetMaxStamina());
         this.staminaUseRate = InheritGene(ParentA.GetStaminaUseRate(), ParentB.GetStaminaUseRate());
@@ -126,7 +127,11 @@ public class Genes {
         {
             System.out.println("MUTATION!");
             double newGene = geneA + geneB;
-            return newGene * Math.random();
+            double mutated = newGene * Math.random();
+            //keeps a bad mutation from collapsing a trait to ~0
+            double low = (1 - mutationRange) * Math.min(geneA, geneB);
+            double high = (1 + mutationRange) * Math.max(geneA, geneB);
+            return Math.max(low, Math.min(high, mutated));
             ///mutate
         }else
         {
@@ -143,7 +148,7 @@ public class Genes {
 
     private int InheritGene(int geneA, int geneB)
     {
-        return (int)InheritGene((double)geneA, (double)geneB);
+        return Math.max(1, (int)InheritGene((double)geneA, (double)geneB));
         
     }
 
