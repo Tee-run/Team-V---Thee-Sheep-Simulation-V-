@@ -418,17 +418,28 @@ public class Board extends JPanel implements ActionListener {
         repaint();
     }
 
-    private void addNewStat() {
-        int numSheep = entities.get(Ent.sheep.get()).size();
-        int numWolves = entities.get(Ent.wolf.get()).size();
-        int numGrass = entities.get(Ent.grass.get()).size();
-        int numFlowers = entities.get(Ent.flower.get()).size();
-        stats.add(new Stat(numSheep, numWolves, numGrass, numFlowers, tic));
-        if (stats.size() > 246) {
-            stats.remove(0);
-            statScreen.ticOffset++;
-        }
-    }
+       private void addNewStat() {
+           int numSheep = entities.get(Ent.sheep.get()).size();
+           int numWolves = entities.get(Ent.wolf.get()).size();
+           int numGrass = entities.get(Ent.grass.get()).size();
+           int numFlowers = entities.get(Ent.flower.get()).size();
+           Stat.Traits sheepTraits = averageTraits(entities.get(Ent.sheep.get()));
+           Stat.Traits wolfTraits = averageTraits(entities.get(Ent.wolf.get()));
+           System.out.println("Average sheep traits " + sheepTraits + " wolf traits " + wolfTraits);
+           stats.add(new Stat(numSheep, numWolves, numGrass, numFlowers, tic, sheepTraits, wolfTraits));
+           if (stats.size() > 246) {
+               stats.remove(0);
+               statScreen.ticOffset++;
+           }
+       }
+
+       //parallel stream to average the animals' traits
+       private Stat.Traits averageTraits(List<Entity> animals) {
+           return animals.parallelStream()
+                         .filter(Entity::IsAlive)
+                         .map(ent -> (Animal) ent)
+                         .collect(Stat.averageTraits());
+       }
 
 
     private void debugHover() {
