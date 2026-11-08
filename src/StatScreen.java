@@ -8,6 +8,7 @@ public class StatScreen extends JPanel{
     public JPanel statPanel;
     private List<Stat> stats;
     public int ticOffset;
+    public boolean showTraits;
     private int yOffset = 50;
     private int xOffset = 25;
 
@@ -39,7 +40,12 @@ public class StatScreen extends JPanel{
     @Override 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (stats == null) {
+            if (stats == null) {
+            return;
+        }
+
+        if (showTraits) {
+            drawTraits(g);
             return;
         }
 
@@ -192,6 +198,61 @@ public class StatScreen extends JPanel{
         g.drawLine(xPos - 20, yPos - strHeight / 2, xPos - 5, yPos - strHeight / 2);
 
     }
+
+    //average speed and perception of each species as a percentage of the first sample
+    private void drawTraits(Graphics g) {
+        int plotHeight = height - yOffset;
+        Stat first = stats.get(0);
+
+        g.setColor(Color.darkGray);
+        g.drawLine(xOffset, plotHeight / 2, width, plotHeight / 2);
+
+        for (int i = 0; i < stats.size() - 1; i++) {
+            Stat stat1 = stats.get(i);
+            Stat stat2 = stats.get(i + 1);
+            int xPos1 = scaleXPos(stat1.tic / 100 - ticOffset) + 2 + xOffset;
+            int xPos2 = scaleXPos(stat2.tic / 100 - ticOffset) + 2 + xOffset;
+
+            g.setColor(Color.white);
+            g.drawLine(xPos1, traitY(stat1.sheepTraits.speed, first.sheepTraits.speed), xPos2, traitY(stat2.sheepTraits.speed, first.sheepTraits.speed));
+            g.setColor(Color.cyan);
+            g.drawLine(xPos1, traitY(stat1.sheepTraits.perception, first.sheepTraits.perception), xPos2, traitY(stat2.sheepTraits.perception, first.sheepTraits.perception));
+            g.setColor(Color.gray);
+            g.drawLine(xPos1, traitY(stat1.wolfTraits.speed, first.wolfTraits.speed), xPos2, traitY(stat2.wolfTraits.speed, first.wolfTraits.speed));
+            g.setColor(Color.orange);
+            g.drawLine(xPos1, traitY(stat1.wolfTraits.perception, first.wolfTraits.perception), xPos2, traitY(stat2.wolfTraits.perception, first.wolfTraits.perception));
+        }
+
+        g.setColor(Color.white);
+        g.drawLine(xOffset, 0, xOffset, plotHeight);
+        g.drawLine(xOffset, plotHeight, width, plotHeight);
+        g.drawString("200%", xOffset + 5, 15);
+        g.drawString("100% (first sample)", xOffset + 5, plotHeight / 2 - 5);
+        g.drawString("0%", xOffset + 5, plotHeight - 5);
+        g.drawString("Average traits (press E to switch back)", xOffset + 5, plotHeight + 25);
+
+        g.drawString("Sheep speed", width - 140, 20);
+        g.setColor(Color.cyan);
+        g.drawString("Sheep perception", width - 140, 40);
+        g.setColor(Color.gray);
+        g.drawString("Wolf speed", width - 140, 60);
+        g.setColor(Color.orange);
+        g.drawString("Wolf perception", width - 140, 80);
+    }
+
+    //converts a trait value into a y position on the graph
+    private int traitY(double value, double start) {
+        int plotHeight = height - yOffset;
+        if (start == 0) {
+            return plotHeight;
+        }
+        int y = plotHeight - (int)(value / start * plotHeight / 2);
+        return Math.max(0, Math.min(plotHeight, y));
+    }
+
+
+
+
 
     private int scaleXPos(int xPos) {
         return xPos * getRatio();

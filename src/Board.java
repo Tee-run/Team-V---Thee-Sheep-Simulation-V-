@@ -361,6 +361,12 @@ public class Board extends JPanel implements ActionListener {
         yPos += strHeight;
         g.drawString(str, xPos, yPos);
 
+        str = "Press \"E\" to switch the statistics screen to the average traits graph";
+        strWidth = metrics.stringWidth(str);
+        xPos = width / 2 - strWidth / 2;
+        yPos += strHeight * 2;
+        g.drawString(str, xPos, yPos);
+
         str = "Press \"I\" to get back to this screen (will pause the simulation)";
         strWidth = metrics.stringWidth(str);
         xPos = width / 2 - strWidth / 2;
@@ -425,7 +431,6 @@ public class Board extends JPanel implements ActionListener {
            int numFlowers = entities.get(Ent.flower.get()).size();
            Stat.Traits sheepTraits = averageTraits(entities.get(Ent.sheep.get()));
            Stat.Traits wolfTraits = averageTraits(entities.get(Ent.wolf.get()));
-           System.out.println("Average sheep traits " + sheepTraits + " wolf traits " + wolfTraits);
            stats.add(new Stat(numSheep, numWolves, numGrass, numFlowers, tic, sheepTraits, wolfTraits));
            if (stats.size() > 246) {
                stats.remove(0);
@@ -558,6 +563,10 @@ public class Board extends JPanel implements ActionListener {
             if (keyCode == KeyEvent.VK_S) {
                 showStats = !showStats;
                 statFrame.setVisible(showStats);
+            }
+
+            if (keyCode == KeyEvent.VK_E) {
+                statScreen.showTraits = !statScreen.showTraits;
             }
 
             if (keyCode == KeyEvent.VK_SPACE && !started) {
