@@ -13,6 +13,8 @@ public class Sheep extends Animal {
         nutrition = 0.5;
         entityType = Board.Ent.sheep;
         this.sprite = getSheepImage();
+        spriteFaceRight = false;
+        facingRight = false;
         sprintOnFlee = true;
     }
 
@@ -48,4 +50,3 @@ public class Sheep extends Animal {
         }
     }
 }
-
