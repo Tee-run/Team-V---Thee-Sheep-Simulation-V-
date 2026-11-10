@@ -67,7 +67,7 @@ public class Sheep extends Animal {
             .forEach(other -> ((Sheep) other).JoinPanic(hunter));
     }
 
-    //sheep starts fleeing too, and passes the panic on to the sheep near it
+    //sheep starts fleeing too
     private void JoinPanic(Animal hunter)
     {
         if(state == AnimalState.fleeing || Math.random() > herdPanicChance)
@@ -76,7 +76,6 @@ public class Sheep extends Animal {
         }
         state = AnimalState.fleeing;
         chasingAnimal = hunter;
-        SpreadPanic(hunter);
     }
 
     public static Image getSheepImage() {
