@@ -44,6 +44,7 @@ public class Sheep extends Animal {
     //how far a panicking sheep can warn the others and how likely each one is to join in
     private static double herdPanicRange = 300;
     private static double herdPanicChance = 0.8;
+    private static Font panicFont = new Font("Helvetica", Font.BOLD, 20);
 
     @Override
     public void AlertAnimal(Animal hunter)
@@ -76,6 +77,22 @@ public class Sheep extends Animal {
         }
         state = AnimalState.fleeing;
         chasingAnimal = hunter;
+    }
+
+    //adds ared ! above a sheep that is fleeing so the panic is easy to see
+    @Override
+    public void drawEntity(Graphics g)
+    {
+        super.drawEntity(g);
+
+        if(state == AnimalState.fleeing)
+        {
+            Font oldFont = g.getFont();
+            g.setFont(panicFont);
+            g.setColor(Color.red);
+            g.drawString("!", pos.getX() - 3, pos.getY() - 25);
+            g.setFont(oldFont);
+        }
     }
 
     public static Image getSheepImage() {
