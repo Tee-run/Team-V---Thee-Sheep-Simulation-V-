@@ -41,6 +41,43 @@ public class Sheep extends Animal {
 
         super.Reproduce(partAnimal);
     }
+    //how far a panicking sheep can warn the others and how likely each one is to join in
+    private static double herdPanicRange = 300;
+    private static double herdPanicChance = 0.8;
+
+    @Override
+    public void AlertAnimal(Animal hunter)
+    {
+        boolean wasFleeing = state == AnimalState.fleeing;
+        super.AlertAnimal(hunter);
+
+        //a shep that has just started running spreads the panic to the sheep near it
+        if(!wasFleeing && state == AnimalState.fleeing)
+        {
+            SpreadPanic(hunter);
+        }
+    }
+
+    private void SpreadPanic(Animal hunter)
+    {
+        Board.entities.get(Board.Ent.sheep.get()).stream()
+            .filter(Entity::IsAlive)
+            .filter(other -> other != this)
+            .filter(other -> pos.dist(other.pos) < herdPanicRange)
+            .forEach(other -> ((Sheep) other).JoinPanic(hunter));
+    }
+
+    //sheep starts fleeing too, and passes the panic on to the sheep near it
+    private void JoinPanic(Animal hunter)
+    {
+        if(state == AnimalState.fleeing || Math.random() > herdPanicChance)
+        {
+            return;
+        }
+        state = AnimalState.fleeing;
+        chasingAnimal = hunter;
+        SpreadPanic(hunter);
+    }
 
     public static Image getSheepImage() {
         try {
