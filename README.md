@@ -19,6 +19,9 @@ The simulation currently contains:
 - Animal reproduction and inherited attributes
 - Grass spreading and flower generation
 - Basic animal behaviour states for finding food and mates
+- Animal genes created with a builder (`GenesBuilder`) and animals created through a factory (`EntityFactory`)
+- Sheep panic as a herd when a wolf chases one of them, and a red ! shows above the sheep that are running away
+- A statistics window with the population graph and an average speed and perception graph (S to open it, E to switch graphs)
 
 ## Project Structure
 - `Main.java` - application entry point and window setup
@@ -31,6 +34,11 @@ The simulation currently contains:
 - `Grass.java` - Grass growth and spreading
 - `Flower.java` - Flower Entity
 - `Position.java` - Position and distance calculation
+- `Genes.java` - Animal traits, and how they are inherited and mutated
+- `GenesBuilder.java` - Builder that creates the `Genes` for sheep and wolves
+- `EntityFactory.java` - Factory that creates sheep and wolves, including babies
+- `Stat.java` - Population and average trait samples, with a custom collector for the averages
+- `StatScreen.java` - Statistics window and graphs
 
 ## Ongoing Development
 - Improving animal mating and reproduction logic
