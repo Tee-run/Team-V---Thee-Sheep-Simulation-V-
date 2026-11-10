@@ -57,6 +57,7 @@ public class Board extends JPanel implements ActionListener {
         statScreen = new StatScreen(bWidth + 100, bHeight + 100);
         statFrame = new JFrame();
         statFrame.add(statScreen);
+        statScreen.addKeyListener(new KeyInput());
         statFrame.setTitle("Statistics");
         statFrame.setResizable(false);
         statFrame.pack();
